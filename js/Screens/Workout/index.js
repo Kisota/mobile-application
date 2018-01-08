@@ -2,14 +2,10 @@ import React, { Component } from 'react';
 
 import {
   ScrollView,
-  Text,
-  StatusBar,
   View,
-
-  TextInput,
-  Button,
+  Text,
 } from 'react-native';
-import { List } from 'react-native-elements';
+import { Button, List, FormInput } from 'react-native-elements';
 
 import EditableStep from './EditableStep';
 
@@ -43,28 +39,35 @@ class WorkoutScreen extends Component<*> {
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <StatusBar />
         <ScrollView style={{ flex: 1 }}>
-          <Text
+          <View
             style={{
-              backgroundColor: '#00FF00',
-              marginTop: '10%',
+              backgroundColor: '#F0544F',
+              paddingTop: '10%',
+              paddingBottom: '5%',
             }}
           >
-            Workout Creator
-          </Text>
-          <TextInput
-            style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-            placeholder="Type here to add your step!"
-            onChangeText={text => this.setState({ text })}
-            value={this.state.text}
-          />
-          <Button
-            onPress={this.addStep}
-            title="ADD"
-            color="#D81E5B"
-            accessibilityLabel="Add a step to the workout"
-          />
+            <Text style={{ textAlign: 'center' }}>
+              Workout Creator
+            </Text>
+          </View>
+          <View style={{ marginTop: '5%', marginBottom: '5%' }}>
+            <FormInput
+              placeholder="Type here to add your step!"
+              onChangeText={text => this.setState({ text })}
+              value={this.state.text}
+            />
+          </View>
+          <View style={{ marginTop: 20, marginBottom: 20 }}>
+            <Button
+              raised
+              icon={{ name: 'add' }}
+              title="ADD"
+              color="#FFFFFF"
+              backgroundColor="#D81E5B"
+              onPress={this.addStep}
+            />
+          </View>
           <List containerStyle={{ marginBottom: 20 }}>
             {this.state.workoutSteps.map((step, idx) => (
               <EditableStep
