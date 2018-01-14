@@ -15,6 +15,8 @@ class WorkoutScreen extends Component<*> {
     this.state = {
       text: '',
       workoutSteps: [],
+      workouts: [],
+      workoutName: '',
     };
   }
 
@@ -25,6 +27,14 @@ class WorkoutScreen extends Component<*> {
     this.setState({
       text: '',
       workoutSteps: [...this.state.workoutSteps, nextState],
+    });
+  }
+
+  create = () => {
+    this.setState({
+      workouts: [...this.state.workouts, this.state.workoutSteps],
+      workoutSteps: [],
+      workoutName: '',
     });
   }
 
@@ -53,6 +63,13 @@ class WorkoutScreen extends Component<*> {
           </View>
           <View style={{ marginTop: '5%', marginBottom: '5%' }}>
             <FormInput
+              placeholder="Name"
+              onChangeText={text => this.setState({ workoutName: text })}
+              value={this.state.workoutName}
+            />
+          </View>
+          <View style={{ marginTop: '5%', marginBottom: '5%' }}>
+            <FormInput
               placeholder="Type here to add your step!"
               onChangeText={text => this.setState({ text })}
               value={this.state.text}
@@ -77,6 +94,16 @@ class WorkoutScreen extends Component<*> {
               />
             ))}
           </List>
+          <View style={{ marginTop: 20, marginBottom: 20 }}>
+            <Button
+              raised
+              icon={{ name: 'done' }}
+              title="CREATE"
+              color="#FFFFFF"
+              backgroundColor="#D81E5B"
+              onPress={this.create}
+            />
+          </View>
         </ScrollView>
       </View>
     );
