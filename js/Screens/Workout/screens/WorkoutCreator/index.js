@@ -5,11 +5,15 @@ import {
   View,
   Text,
 } from 'react-native';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { Button, List, FormInput } from 'react-native-elements';
 
+
+import { createWorkout } from '../../../../domains/workout/actions';
 import EditableStep from './EditableStep';
 
-class WorkoutScreen extends Component<*> {
+class WorkoutCreatorScreen extends Component<*> {
   constructor(props) {
     super(props);
     this.state = {
@@ -35,6 +39,10 @@ class WorkoutScreen extends Component<*> {
       workouts: [...this.state.workouts, this.state.workoutSteps],
       workoutSteps: [],
       workoutName: '',
+    });
+    this.props.createWorkout({
+      name: 'test',
+      steps: ['k', 'gro'],
     });
   }
 
@@ -110,4 +118,9 @@ class WorkoutScreen extends Component<*> {
   }
 }
 
-export default WorkoutScreen;
+export default connect(
+  () => ({}),
+  dispatch => bindActionCreators({
+    createWorkout,
+  }, dispatch),
+)(WorkoutCreatorScreen);

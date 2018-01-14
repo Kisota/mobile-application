@@ -1,31 +1,31 @@
 import React, { Component } from 'react';
+import T from 'prop-types';
+
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 import {
   ScrollView,
   View,
 } from 'react-native';
 
-import { NavigationActions } from 'react-navigation';
 import { Button, List } from 'react-native-elements';
 
+import { deleteWorkout } from '../../../../domains/workout/actions';
 import WorkoutItem from './WorkoutItem';
 
 class WorkoutListScreen extends Component<*> {
-  state = {
-    workouts: [],
-  }
-
   create = () => {
     const { navigation } = this.props;
-
     navigation.navigate('WorkoutCreator');
   }
 
-  view = (index) => {
-    if (this.navigator) {
-      this.navigator.dispatch(NavigationActions.navigate({ routeName: `/workouts/view/${index}` }));
-    }
+  view = (id) => {
+    const { navigation } = this.props;
+    navigation.navigate('WorkoutViewer', { id });
   }
+
+  delete = id => this.props.deleteWorkout({ id });
 
   render() {
     return (
@@ -42,12 +42,12 @@ class WorkoutListScreen extends Component<*> {
         </View>
         <ScrollView style={{ flex: 1 }}>
           <List containerStyle={{ marginBottom: 20 }}>
-            {this.state.workouts.map((step, index) => (
+            {this.props.workouts.map(workout => (
               <WorkoutItem
-                key={step}
-                step={step}
-                onDelete={() => this.delete(index)}
-                onClick={() => this.view(index)}
+                key={workout.id}
+                data={workout}
+                onPress={() => this.view(workout.id)}
+                onDelete={() => this.delete(workout.id)}
               />
             ))}
           </List>
@@ -57,4 +57,23 @@ class WorkoutListScreen extends Component<*> {
   }
 }
 
-export default WorkoutListScreen;
+WorkoutListScreen.propTypes = {
+  workouts: T.array.isRequired,
+  navigation: T.object.isRequired,
+
+  /* functions */
+  deleteWorkout: T.func.isRequired,
+};
+
+WorkoutListScreen.defaultProps = {
+  workouts: [],
+};
+
+export default connect(
+  state => ({
+    workouts: state.workouts.items,
+  }),
+  dispatch => bindActionCreators({
+    deleteWorkout,
+  }, dispatch),
+)(WorkoutListScreen);

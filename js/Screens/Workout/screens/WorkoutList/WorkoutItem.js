@@ -3,20 +3,24 @@ import T from 'prop-types';
 
 import { ListItem } from 'react-native-elements';
 
-const WorkoutItem = ({ step, onDelete }) => (
+const WorkoutItem = ({ data, onDelete, onPress }) => (
   <ListItem
-    key={step}
-    title={step}
+    key={data.name}
+    title={data.name}
     rightIcon={{ name: 'delete' }}
     onPressRightIcon={onDelete}
     titleNumberOfLines={10}
+    onPress={onPress}
   />
 );
 
 
 WorkoutItem.propTypes = {
-  step: T.string.isRequired,
+  data: T.object.isRequired,
+
+  /* functions */
   onDelete: T.func.isRequired,
+  onPress: T.func.isRequired,
 };
 
 WorkoutItem.defaultProps = {};
