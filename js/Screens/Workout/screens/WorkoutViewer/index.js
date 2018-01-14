@@ -6,10 +6,12 @@ import { connect } from 'react-redux';
 import {
   View,
   Text,
+  ScrollView,
 } from 'react-native';
 
-import { Button } from 'react-native-elements';
+import { List, Button } from 'react-native-elements';
 
+import WorkoutStep from './WorkoutStep';
 
 class WorkoutViewerScreen extends Component<*> {
   start = () => {
@@ -37,6 +39,18 @@ class WorkoutViewerScreen extends Component<*> {
             {workout.name.toUpperCase()}
           </Text>
         </View>
+
+        <ScrollView style={{ flex: 1 }}>
+          <List containerStyle={{ marginBottom: 20 }}>
+            {workout.steps.map((step, index) => (
+              <WorkoutStep
+                key={`${step}-${index}`}
+                data={step}
+              />
+            ))}
+          </List>
+        </ScrollView>
+
         <View style={{ marginTop: 20, marginBottom: 20 }}>
           <Button
             raised

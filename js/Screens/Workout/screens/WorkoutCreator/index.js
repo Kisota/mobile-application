@@ -9,7 +9,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Button, List, FormInput } from 'react-native-elements';
 
-
+import randomWord from 'random-words';
 import { createWorkout } from '../../../../domains/workout/actions';
 import EditableStep from './EditableStep';
 
@@ -17,32 +17,46 @@ class WorkoutCreatorScreen extends Component<*> {
   constructor(props) {
     super(props);
     this.state = {
-      text: '',
+      step: '',
       workoutSteps: [],
-      workouts: [],
       workoutName: '',
     };
   }
 
   addStep = () => {
-    const nextState = this.state.text;
-    if (!nextState) return;
+    const nextStep = this.state.step;
+
+    /* NOTE dev shortcut */
+    if (process.env.NODE_ENV === 'development' && !nextStep) {
+      this.setState({
+        step: '',
+        workoutSteps: [...this.state.workoutSteps, randomWord()],
+      });
+    }
+    if (!nextStep) return;
 
     this.setState({
-      text: '',
-      workoutSteps: [...this.state.workoutSteps, nextState],
+      step: '',
+      workoutSteps: [...this.state.workoutSteps, nextStep],
     });
   }
 
   create = () => {
+    /* NOTE dev shortcut */
+    if (process.env.NODE_ENV === 'development' && !this.state.workoutName) {
+      this.props.createWorkout({
+        name: `test ${new Date()}`,
+        steps: ['k', 'gro'],
+      });
+      return;
+    }
+    this.props.createWorkout({
+      name: this.state.workoutName,
+      steps: this.state.workoutSteps,
+    });
     this.setState({
-      workouts: [...this.state.workouts, this.state.workoutSteps],
       workoutSteps: [],
       workoutName: '',
-    });
-    this.props.createWorkout({
-      name: 'test',
-      steps: ['k', 'gro'],
     });
   }
 
@@ -60,13 +74,18 @@ class WorkoutCreatorScreen extends Component<*> {
         <ScrollView style={{ flex: 1 }}>
           <View
             style={{
-              backgroundColor: '#F0544F',
-              paddingTop: '10%',
-              paddingBottom: '5%',
+              backgroundColor: 'red',
+              paddingTop: 10,
+              paddingBottom: 10,
             }}
           >
-            <Text style={{ textAlign: 'center' }}>
-              Workout Creator
+            <Text
+              style={{
+                textAlign: 'center',
+                color: '#FFF',
+              }}
+            >
+              {'WORKOUT CREATOR'}
             </Text>
           </View>
           <View style={{ marginTop: '5%', marginBottom: '5%' }}>
@@ -79,8 +98,8 @@ class WorkoutCreatorScreen extends Component<*> {
           <View style={{ marginTop: '5%', marginBottom: '5%' }}>
             <FormInput
               placeholder="Type here to add your step!"
-              onChangeText={text => this.setState({ text })}
-              value={this.state.text}
+              onChangeText={step => this.setState({ step })}
+              value={this.state.step}
             />
           </View>
           <View style={{ marginTop: 20, marginBottom: 20 }}>
