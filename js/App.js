@@ -1,90 +1,60 @@
 /* @flow */
 
 import React from 'react';
-import { ScreenOrientation } from 'expo';
 
-import {
-  Platform,
-} from 'react-native';
+import { Provider } from 'react-redux';
+import configureStore from './store/configureStore';
+import { Text, AppState, AsyncStorage, View } from 'react-native';
+import { Root } from './Routes';
 
-import { TabNavigator } from 'react-navigation';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+const store = configureStore({});
 
-/* screens */
-import {
-  HomeScreen,
-  SettingsScreen,
-  StatisticsScreen,
-  WorkoutScreen,
-} from './Screens';
+// eslint-disable-next-line
+class App extends React.Component {
 
-ScreenOrientation.allow(ScreenOrientation.Orientation.ALL);
+  state = {
+    isStoreLoading: false,
+    store,
+  }
 
-const AppNavigator = TabNavigator(
-  {
-    Index: {
-      screen: HomeScreen,
-      navigationOptions: {
-        tabBarLabel: 'Home',
-        tabBarIcon: ({ tintColor, focused }) => (
-          <Ionicons
-            name={focused ? 'ios-home' : 'ios-home-outline'}
-            size={26}
-            style={{ color: tintColor }}
-          />
-        ),
-      },
-    },
-    Workouts: {
-      screen: WorkoutScreen,
-      navigationOptions: {
-        tabBarLabel: 'Workouts',
-        tabBarIcon: ({ tintColor, focused }) => (
-          <Ionicons
-            name={focused ? 'ios-heart' : 'ios-heart-outline'}
-            size={26}
-            style={{ color: tintColor }}
-          />
-        ),
-      },
-    },
-    Statistics: {
-      screen: StatisticsScreen,
-      navigationOptions: {
-        tabBarLabel: 'Stats',
-        tabBarIcon: ({ tintColor, focused }) => (
-          <Ionicons
-            name={focused ? 'ios-analytics' : 'ios-analytics-outline'}
-            size={26}
-            style={{ color: tintColor }}
-          />
-        ),
-      },
-    },
-    Settings: {
-      screen: SettingsScreen,
-      navigationOptions: {
-        tabBarLabel: 'Settings',
-        tabBarIcon: ({ tintColor, focused }) => (
-          <Ionicons
-            name={focused ? 'ios-settings' : 'ios-settings-outline'}
-            size={26}
-            style={{ color: tintColor }}
-          />
-        ),
-      },
-    },
-  },
-  {
-    initialRouteName: 'Index',
-    headerMode: 'none',
+  componentWillMount() {
+    const self = this;
 
-    /*
-   * Use modal on iOS because the card mode comes from the right,
-   * which conflicts with the drawer example gesture
-   */
-    mode: Platform.OS === 'ios' ? 'modal' : 'card',
-  },
-);
+    AppState.addEventListener('change', this.handleAppStateChange.bind(this));
+    this.setState({ isStoreLoading: true });
+    AsyncStorage.getItem('completeStore').then((value) => {
+      if (value && value.length) {
+        const initialStore = JSON.parse(value);
+        self.setState({ store: configureStore(initialStore) });
+      } else {
+        self.setState({ store: configureStore({}) });
+      }
+      self.setState({ isStoreLoading: false });
+    }).catch(() => {
+      self.setState({ store });
+      self.setState({ isStoreLoading: false });
+    });
+  }
 
-export default () => <AppNavigator />;
+  handleAppStateChange() {
+    const storingValue = JSON.stringify(this.state.store.getState());
+    AsyncStorage.setItem('completeStore', storingValue);
+  }
+
+  render() {
+    if (this.state.isStoreLoading) {
+      return (
+        <View style={{ flex: 1 }}>
+          <Text>Loading Store ...</Text>
+        </View>
+      );
+    }
+    return (
+      <Provider store={this.state.store}>
+        <Root />
+      </Provider>
+    );
+  }
+}
+
+export default App;
