@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import uuidv4 from 'uuid/v4';
 
 import {
   ScrollView,
   View,
-  Text,
+  Picker,
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -12,16 +13,30 @@ import { Button, List, FormInput } from 'react-native-elements';
 import randomWord from 'random-words';
 import { createWorkout } from '../../../../domains/workout/actions';
 import EditableStep from './EditableStep';
+import createArrayFromRange from '../../../../helpers/createArrayFromRange';
+
+const stepInitialState = {
+  label: '',
+  metadata: {
+    reps: 10,
+  },
+};
 
 class WorkoutCreatorScreen extends Component<*> {
   constructor(props) {
     super(props);
     this.state = {
-      step: '',
+      step: stepInitialState,
       workoutSteps: [],
       workoutName: '',
     };
   }
+
+  getCurrentStep = ({ label, metadata }) => ({
+    type: 'GYM',
+    label,
+    metadata,
+  })
 
   addStep = () => {
     const nextStep = this.state.step;
@@ -35,8 +50,10 @@ class WorkoutCreatorScreen extends Component<*> {
     }
     if (!nextStep) return;
 
+    nextStep.id = uuidv4();
+
     this.setState({
-      step: '',
+      step: stepInitialState,
       workoutSteps: [...this.state.workoutSteps, nextStep],
     });
   }
@@ -72,22 +89,6 @@ class WorkoutCreatorScreen extends Component<*> {
     return (
       <View style={{ flex: 1 }}>
         <ScrollView style={{ flex: 1 }}>
-          <View
-            style={{
-              backgroundColor: 'red',
-              paddingTop: 10,
-              paddingBottom: 10,
-            }}
-          >
-            <Text
-              style={{
-                textAlign: 'center',
-                color: '#FFF',
-              }}
-            >
-              {'WORKOUT CREATOR'}
-            </Text>
-          </View>
           <View style={{ marginTop: '5%', marginBottom: '5%' }}>
             <FormInput
               placeholder="Name"
@@ -95,12 +96,24 @@ class WorkoutCreatorScreen extends Component<*> {
               value={this.state.workoutName}
             />
           </View>
-          <View style={{ marginTop: '5%', marginBottom: '5%' }}>
+          <View>
             <FormInput
-              placeholder="Type here to add your step!"
-              onChangeText={step => this.setState({ step })}
-              value={this.state.step}
+              placeholder="Step name (ex: push-ups)"
+              onChangeText={label => this.setState({ step: { ...this.state.step, label } })}
+              value={this.state.step.label}
             />
+            <Picker
+              selectedValue={this.state.step.metadata.reps}
+              onValueChange={reps => this.setState({
+                step: { ...this.state.step, metadata: { ...this.state.step.metadata, reps } },
+              })}
+            >
+              {
+                createArrayFromRange(1, 50).map(i => (
+                  <Picker.Item key={i} label={`${i} reps`} value={i} />
+                ))
+              }
+            </Picker>
           </View>
           <View style={{ marginTop: 20, marginBottom: 20 }}>
             <Button
@@ -115,7 +128,7 @@ class WorkoutCreatorScreen extends Component<*> {
           <List containerStyle={{ marginBottom: 20 }}>
             {this.state.workoutSteps.map((step, idx) => (
               <EditableStep
-                key={step}
+                key={step.id}
                 step={step}
                 onDelete={() => this.deleteStep(idx)}
               />

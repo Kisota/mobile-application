@@ -6,7 +6,8 @@ import { ListItem } from 'react-native-elements';
 const EditableStep = ({ step, onDelete }) => (
   <ListItem
     key={step}
-    title={step}
+    title={step.label}
+    subtitle={`${step.metadata.reps} reps`}
     rightIcon={{ name: 'delete' }}
     onPressRightIcon={onDelete}
     titleNumberOfLines={10}
@@ -15,7 +16,7 @@ const EditableStep = ({ step, onDelete }) => (
 
 
 EditableStep.propTypes = {
-  step: T.string.isRequired,
+  step: T.object.isRequired,
   onDelete: T.func.isRequired,
 };
 
