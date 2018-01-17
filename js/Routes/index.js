@@ -19,8 +19,12 @@ import {
 
 import {
   WorkoutList,
-  WorkoutCreator,
   WorkoutViewer,
+
+  /* creator */
+  WorkoutCreator,
+  WorkoutCreatorStepNameScreen,
+  WorkoutCreatorStepStepsScreen,
 } from '../Screens/Workout/screens';
 
 ScreenOrientation.allow(ScreenOrientation.Orientation.ALL);
@@ -29,11 +33,17 @@ export const WorkoutStack = StackNavigator({
   WorkoutList: {
     screen: WorkoutList,
   },
+  WorkoutViewer: {
+    screen: WorkoutViewer,
+  },
   WorkoutCreator: {
     screen: WorkoutCreator,
   },
-  WorkoutViewer: {
-    screen: WorkoutViewer,
+  WorkoutCreatorStepNameScreen: {
+    screen: WorkoutCreatorStepNameScreen,
+  },
+  WorkoutCreatorStepStepsScreen: {
+    screen: WorkoutCreatorStepStepsScreen,
   },
 });
 
