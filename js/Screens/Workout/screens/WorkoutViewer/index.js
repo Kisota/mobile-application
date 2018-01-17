@@ -44,7 +44,7 @@ class WorkoutViewerScreen extends Component<*> {
           <List containerStyle={{ marginBottom: 20 }}>
             {workout.steps.map((step, index) => (
               <WorkoutStep
-                key={`${step}-${index}`}
+                key={`${step.label}-${index}`}
                 data={step}
               />
             ))}

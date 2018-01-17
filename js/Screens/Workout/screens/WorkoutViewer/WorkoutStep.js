@@ -5,14 +5,16 @@ import { ListItem } from 'react-native-elements';
 
 const WorkoutStep = ({ data }) => (
   <ListItem
-    title={data}
-    hideChevron
-  />
-);
+    key={data}
+    title={data.label}
+    subtitle={data.metadata.reps ? `${data.metadata.reps} reps` : null}
+    rightIcon={{ name: 'delete' }}
+    titleNumberOfLines={10}
+  />);
 
 
 WorkoutStep.propTypes = {
-  data: T.string.isRequired,
+  data: T.object.isRequired,
 };
 
 WorkoutStep.defaultProps = {};
