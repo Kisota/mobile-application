@@ -22,6 +22,7 @@ class App extends React.Component {
 
     AppState.addEventListener('change', this.handleAppStateChange.bind(this));
     this.setState({ isStoreLoading: true });
+    // AsyncStorage.clear();
     AsyncStorage.getItem('completeStore').then((value) => {
       if (value && value.length) {
         const initialStore = JSON.parse(value);
