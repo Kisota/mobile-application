@@ -13,9 +13,30 @@ const initialState = {
       id: uuidv4(),
       name: 'example workout',
       steps: [
-        'push-ups',
-        'rest',
-        'pull-ups',
+        /* First step */
+        {
+          type: 'GYM',
+          label: 'push-ups',
+          metadata: {
+            reps: 10,
+          },
+        },
+        /* Rest */
+        {
+          type: 'REST',
+          label: 'rest',
+          metadata: {
+            duration: 10,
+          },
+        },
+        /* First step */
+        {
+          type: 'GYM',
+          label: 'pull-ups',
+          metadata: {
+            reps: 10,
+          },
+        },
       ],
     },
   ],

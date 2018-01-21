@@ -3,8 +3,8 @@
 import React from 'react';
 
 import { Provider } from 'react-redux';
-import configureStore from './store/configureStore';
 import { Text, AppState, AsyncStorage, View } from 'react-native';
+import configureStore from './store/configureStore';
 import { Root } from './Routes';
 
 const store = configureStore({});
@@ -22,6 +22,7 @@ class App extends React.Component {
 
     AppState.addEventListener('change', this.handleAppStateChange.bind(this));
     this.setState({ isStoreLoading: true });
+    // AsyncStorage.clear();
     AsyncStorage.getItem('completeStore').then((value) => {
       if (value && value.length) {
         const initialStore = JSON.parse(value);
