@@ -15,7 +15,7 @@ import {
   HomeScreen,
   SettingsScreen,
   StatisticsScreen,
-} from '../Screens';
+} from '../screens';
 
 import {
   WorkoutList,
@@ -28,7 +28,7 @@ import {
 
   /* player */
   WorkoutPlayer,
-} from '../Screens/Workout/screens';
+} from '../screens/Workout/screens';
 
 ScreenOrientation.allow(ScreenOrientation.Orientation.ALL);
 
