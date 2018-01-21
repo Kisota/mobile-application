@@ -11,11 +11,14 @@ import {
 
 import { List, Button } from 'react-native-elements';
 
+import get from 'lodash/get';
+
 import WorkoutStep from './WorkoutStep';
 
 class WorkoutViewerScreen extends Component<*> {
   start = () => {
-
+    const { navigation, workout } = this.props;
+    navigation.navigate('WorkoutPlayer', { id: get(workout, 'id') });
   }
 
   render() {
@@ -68,6 +71,7 @@ class WorkoutViewerScreen extends Component<*> {
 
 WorkoutViewerScreen.propTypes = {
   workout: T.object.isRequired,
+  navigation: T.object.isRequired,
 };
 
 WorkoutViewerScreen.defaultProps = {
