@@ -5,7 +5,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { Text, AppState, AsyncStorage, View } from 'react-native';
 import configureStore from './store/configureStore';
-import { Root } from './Routes';
+import { Root } from './routes';
 
 const store = configureStore({});
 
