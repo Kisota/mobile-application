@@ -4,6 +4,8 @@ import React from 'react';
 
 import { Provider } from 'react-redux';
 import { Text, AppState, AsyncStorage, View } from 'react-native';
+import { Font, AppLoading } from 'expo';
+
 import configureStore from './store/configureStore';
 import { Root } from './routes';
 
@@ -13,6 +15,7 @@ const store = configureStore({});
 class App extends React.Component {
 
   state = {
+    isReady: false,
     isStoreLoading: false,
     store,
   }
@@ -42,7 +45,24 @@ class App extends React.Component {
     AsyncStorage.setItem('completeStore', storingValue);
   }
 
+  load = () => {
+    return Font.loadAsync({
+      'Poiret One': require('../assets/fonts/PoiretOne-Regular.ttf'),
+      OpenSans: require('../assets/fonts/OpenSans-Regular.ttf'),
+      'OpenSans Light': require('../assets/fonts/OpenSans-Light.ttf'),
+    });
+  }
+
   render() {
+    if (!this.state.isReady) {
+      return (
+        <AppLoading
+          startAsync={this.load}
+          onFinish={() => this.setState({ isReady: true })}
+          onError={console.warn}
+        />
+      );
+    }
     if (this.state.isStoreLoading) {
       return (
         <View style={{ flex: 1 }}>
