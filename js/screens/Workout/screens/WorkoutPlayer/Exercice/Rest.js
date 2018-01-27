@@ -1,10 +1,30 @@
 import React, { Component } from 'react';
 import T from 'prop-types';
 
-import { View, Text } from 'react-native';
-import { Button } from 'react-native-elements';
+import { View, Text, StyleSheet } from 'react-native';
+
+import Header from './components/Header';
+import BottomButton from './components/BottomButton';
 
 const GET_DIFFERENCE_SECONDS = (t1, t2) => Math.floor(Math.abs((t1 - t2) / 1000));
+
+const styles = StyleSheet.create({
+  secondsLeft: {
+    fontSize: 64,
+    textAlign: 'center',
+    color: '#424242',
+  },
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  screenContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
+});
 
 class RestExercice extends Component<*> {
   state = {
@@ -37,36 +57,34 @@ class RestExercice extends Component<*> {
     const { secondsLeft } = this.state;
 
     return (
-      <View>
-        <Text style={{ textAlign: 'center' }}>{label.toUpperCase()}</Text>
-        <Text>
-          {secondsLeft === null ? duration : secondsLeft } seconds left
-        </Text>
-        <View style={{ marginTop: 20, marginBottom: 20 }}>
-          <Button
-            raised
-            icon={{ name: 'skip-next' }}
-            title="SKIP"
-            color="#FFFFFF"
-            backgroundColor="#D81E5B"
-            onPress={this.goNext}
-          />
+      <View style={styles.screenContainer}>
+        <Header label={label} />
+        <View style={styles.content}>
+          <Text style={styles.secondsLeft}>
+            {secondsLeft === null ? duration : secondsLeft } seconds
+          </Text>
         </View>
+        <BottomButton
+          icon="skip-next"
+          label="Skip!"
+          onPress={this.goNext}
+        />
       </View>
     );
   }
 }
 
-
 RestExercice.propTypes = {
   /* data */
-  label: T.string.isRequired,
+  label: T.string,
   duration: T.number.isRequired,
 
   /* functions */
   goNext: T.func.isRequired,
 };
 
-RestExercice.defaultProps = {};
+RestExercice.defaultProps = {
+  label: 'Rest',
+};
 
 export default RestExercice;
