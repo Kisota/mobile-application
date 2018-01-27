@@ -36,9 +36,6 @@ export const WorkoutStack = StackNavigator({
   WorkoutList: {
     screen: WorkoutList,
   },
-  WorkoutPlayer: {
-    screen: WorkoutPlayer,
-  },
   WorkoutViewer: {
     screen: WorkoutViewer,
   },
@@ -126,6 +123,9 @@ const Tabs = TabNavigator(
 export const Root = StackNavigator({
   Tabs: {
     screen: Tabs,
+  },
+  WorkoutPlayer: {
+    screen: WorkoutPlayer,
   },
 }, {
   mode: 'modal',

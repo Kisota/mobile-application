@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import {
   ScrollView,
   View,
+  StatusBar,
 } from 'react-native';
 
 import { Button, List } from 'react-native-elements';
@@ -30,6 +31,7 @@ class WorkoutListScreen extends Component<*> {
   render() {
     return (
       <View style={{ flex: 1 }}>
+        <StatusBar hidden />
         <View style={{ marginTop: 20, marginBottom: 20 }}>
           <Button
             raised

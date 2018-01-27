@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import {
   View,
+  StatusBar,
 } from 'react-native';
 
 import isEmpty from 'lodash/isEmpty';
@@ -40,6 +41,13 @@ class WorkoutPlayerScreen extends Component<*> {
     this.setState({ steps });
   }
 
+  gymAdjustWeight = (value) => {
+    const steps = this.state.steps.slice();
+
+    steps[this.state.currentStep].metadata.usedWeight = value;
+    this.setState({ steps });
+  }
+
   init = (props) => {
     const workout = get(props, 'workout');
     if (this.state.started) return;
@@ -61,6 +69,11 @@ class WorkoutPlayerScreen extends Component<*> {
     this.setState({ currentStep: this.state.currentStep + 1 });
   }
 
+  end = () => {
+    const { navigation } = this.props;
+    navigation.navigate('WorkoutList');
+  }
+
   renderCurrentStep = () => {
     const currentStep = this.getCurrentStep();
 
@@ -71,7 +84,12 @@ class WorkoutPlayerScreen extends Component<*> {
         <GymExercice
           label={get(currentStep, 'label')}
           reps={get(currentStep, 'metadata.reps')}
+          weight={get(currentStep, 'metadata.weight', 5)}
+
           adjustReps={this.gymAdjustReps}
+          adjustWeight={this.gymAdjustWeight}
+          usedWeight={get(currentStep, 'metadata.usedWeight', 5)}
+
           goNext={this.goNext}
         />
       );
@@ -90,9 +108,12 @@ class WorkoutPlayerScreen extends Component<*> {
   }
 
   render() {
+    console.log('this.state', this.state);
+
     return (
       <View style={{ flex: 1 }}>
-        {this.state.ended && <EndScreen />}
+        <StatusBar hidden />
+        {this.state.ended && <EndScreen end={this.end} />}
         {this.state.started &&
           !this.state.ended &&
           this.renderCurrentStep()
@@ -104,6 +125,7 @@ class WorkoutPlayerScreen extends Component<*> {
 
 WorkoutPlayerScreen.propTypes = {
   workout: T.object.isRequired,
+  navigation: T.object.isRequired,
 };
 
 WorkoutPlayerScreen.defaultProps = {
