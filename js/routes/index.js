@@ -48,6 +48,9 @@ export const WorkoutStack = StackNavigator({
   WorkoutCreatorStepStepsScreen: {
     screen: WorkoutCreatorStepStepsScreen,
   },
+}, {
+  headerMode: 'none',
+  mode: 'card',
 });
 
 const Tabs = TabNavigator(
@@ -70,7 +73,6 @@ const Tabs = TabNavigator(
       screen: WorkoutStack,
       path: '/workouts',
       navigationOptions: {
-        title: 'lol',
         tabBarLabel: 'Workouts',
         tabBarIcon: ({ tintColor, focused }) => (
           <Ionicons
