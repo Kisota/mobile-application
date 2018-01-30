@@ -39,9 +39,6 @@ export const WorkoutStack = StackNavigator({
   WorkoutViewer: {
     screen: WorkoutViewer,
   },
-  WorkoutCreator: {
-    screen: WorkoutCreator,
-  },
   WorkoutCreatorStepNameScreen: {
     screen: WorkoutCreatorStepNameScreen,
   },
@@ -128,6 +125,9 @@ export const Root = StackNavigator({
   },
   WorkoutPlayer: {
     screen: WorkoutPlayer,
+  },
+  WorkoutCreator: {
+    screen: WorkoutCreator,
   },
 }, {
   mode: 'modal',
