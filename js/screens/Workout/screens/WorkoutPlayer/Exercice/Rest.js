@@ -4,7 +4,7 @@ import T from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
 
 import Header from './components/Header';
-import BottomButton from './components/BottomButton';
+import BottomButton from '../../../../../components/BottomButton';
 
 const GET_DIFFERENCE_SECONDS = (t1, t2) => Math.floor(Math.abs((t1 - t2) / 1000));
 
