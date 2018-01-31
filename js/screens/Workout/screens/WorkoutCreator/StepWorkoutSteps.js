@@ -21,11 +21,11 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   stepInputContainer: {
-    height: 50,
+    padding: 7,
   },
   addStepButtonContainer: {
-    marginTop: 20,
-    marginBottom: 20,
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 });
 
@@ -115,9 +115,10 @@ class WorkoutCreatorScreen extends Component<*> {
             color="#FFFFFF"
             backgroundColor="#D81E5B"
             onPress={this.addStep}
+            containerViewStyle={{ width: '100%' }}
           />
         </View>
-        <ScrollView style={{ flex: 4 }}>
+        <ScrollView style={{ flex: 10 }}>
           <List containerStyle={{ marginBottom: 20 }}>
             {this.state.workoutSteps.map((step, idx) => (
               <EditableStep

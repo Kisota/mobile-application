@@ -8,10 +8,12 @@ import { createWorkout } from '../../../../domains/workout/actions';
 
 import WorkoutCreatorStepNameScreen from './StepWorkoutName';
 import WorkoutCreatorStepStepsScreen from './StepWorkoutSteps';
+import GymExerciceSearcher from './GymExerciceSearcher';
 
 const steps = [
-  WorkoutCreatorStepNameScreen,
+  GymExerciceSearcher,
   WorkoutCreatorStepStepsScreen,
+  WorkoutCreatorStepNameScreen,
 ];
 
 class WorkoutCreatorScreen extends Component<*> {
