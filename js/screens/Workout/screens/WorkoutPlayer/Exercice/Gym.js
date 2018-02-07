@@ -5,7 +5,7 @@ import { View, StyleSheet } from 'react-native';
 
 import Header from './components/Header';
 import RepAdjuster from './components/RepAdjuster';
-import BottomButton from './components/BottomButton';
+import BottomButton from '../../../../../components/BottomButton';
 import AdvisedWeight from './components/AdvisedWeight';
 import WeightAdjuster from './components/WeightAdjuster';
 
